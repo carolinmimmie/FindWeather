@@ -6,7 +6,7 @@ interface WeatherForecastProps {
 
 const WeatherForecast = ({ forecast }: WeatherForecastProps) => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols2 md:grid-cols-3 lg:grid-cols-5 gap-5">
+    <div className="grid grid-cols-1 sm:grid-cols2 md:grid-cols-3 lg:grid-cols-5 gap-5 p-12">
       {forecast.map((day, index) => (
         <div
           key={index}

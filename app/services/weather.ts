@@ -1,4 +1,7 @@
-import { CurrentWeatherInterface, ForecastInterface } from "../interface/weather";
+import {
+  CurrentWeatherInterface,
+  ForecastInterface,
+} from "../interface/weather";
 
 // API-nyckeln som används för att göra förfrågningar till OpenWeatherMap API.
 const apiKey = "275cafd83f6e93c1e38f23c316d49d6d";
@@ -12,13 +15,18 @@ const baseUrl = "https://api.openweathermap.org/data/2.5";
 
 const fetchWeatherData = async (
   city: string
-): Promise<{ currentWeather: CurrentWeatherInterface; forecast: ForecastInterface[] }> => {
+): Promise<{
+  currentWeather: CurrentWeatherInterface;
+  forecast: ForecastInterface[];
+}> => {
   //Gör en asynkron begäran till OpenWeatherMap API för att hämta den aktuella
   //väderinformationen för den angivna staden.
   const currentWeatherResponse = await fetch(
     `${baseUrl}/weather?q=${city}&units=metric&appid=${apiKey}`
   );
-  // Konverterar svaret från begäran till JSON-format.
+
+  // När du får tillbaka svaret använder du json()-metoden på currentWeatherResponse-objektet
+  // för att konvertera det från JSON-format till ett JavaScript objekt
   const currentWeatherData = await currentWeatherResponse.json();
 
   // Kontrollerar om svaret innehåller ett
@@ -31,7 +39,6 @@ const fetchWeatherData = async (
     `${baseUrl}/forecast?q=${city}&units=metric&appid=${apiKey}`
   );
   const forecastData = await forecastResponse.json();
-
 
   if (forecastData.cod !== "200") {
     throw new Error(forecastData.message);
@@ -49,11 +56,13 @@ const fetchWeatherData = async (
   // Skapar en array forecast med väderprognosdata som hämtats från API-svaret, där varje
   // objekt representerar en prognos för ett specifikt datum.
   const forecast: ForecastInterface[] = forecastData.list
+    // Först filtrerar vi listan av väderprognosdata för att bara behålla var åttonde element. D
     .filter((item: any, index: number) => index % 8 === 0)
     .slice(0, 5)
+    //  Därefter mappas varje kvarvarande element i listan till ett nytt objek
     .map((item: any) => ({
       date: new Date(item.dt_txt),
-      temperature: item.main.temp,
+      temperature: Math.round(item.main.temp),
       description: item.weather[0].description,
       icon: item.weather[0].icon,
     }));
