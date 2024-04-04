@@ -7,7 +7,7 @@ This is a simple weather application built with [Next.js](https://nextjs.org/), 
 To use this application, clone this git repository by running the following command in your terminal:
 
 ```bash
-git clone https://github.com/carolinmimmie/weather-app.git
+git clone https://github.com/carolinmimmie/FindWeather.git
 
 cd weather-app
 
